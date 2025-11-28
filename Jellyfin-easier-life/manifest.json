@@ -1,6 +1,6 @@
 {
   "category": "Library",
-  "changelog": "https://github.com/yourusername/Jellyfin-easier-life/releases",
+  "changelog": "https://github.com/trolle6/Jellyfin-life-easier/releases",
   "description": "Enhances library scanning to replace all metadata and provides universal settings like combining seasons.",
   "guid": "A1B2C3D4-E5F6-7890-ABCD-EF1234567890",
   "name": "Jellyfin Easier Life",
