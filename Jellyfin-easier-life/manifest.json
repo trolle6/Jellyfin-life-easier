@@ -1,0 +1,13 @@
+{
+  "category": "Library",
+  "changelog": "https://github.com/yourusername/Jellyfin-easier-life/releases",
+  "description": "Enhances library scanning to replace all metadata and provides universal settings like combining seasons.",
+  "guid": "A1B2C3D4-E5F6-7890-ABCD-EF1234567890",
+  "name": "Jellyfin Easier Life",
+  "overview": "A Jellyfin plugin that converts 'soft' library scans into full metadata replacement operations and provides universal settings like combining all seasons into one.",
+  "owner": "Jellyfin-easier-life",
+  "status": "Active",
+  "targetAbi": "10.9.0.0",
+  "version": "1.0.0.0"
+}
+

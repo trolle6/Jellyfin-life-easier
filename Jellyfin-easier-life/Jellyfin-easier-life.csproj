@@ -1,0 +1,66 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>Jellyfin_easier_life</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Version>1.0.0</Version>
+    <Authors>Jellyfin-easier-life</Authors>
+    <Description>Jellyfin plugin to replace soft scan with full metadata replacement and add universal settings</Description>
+  </PropertyGroup>
+
+  <!-- 
+    IMPORTANT: You need to reference Jellyfin server assemblies to build this plugin.
+    
+    Option 1: Reference from Jellyfin installation (uncomment and update paths):
+  -->
+  <ItemGroup>
+    <!-- Uncomment and update these paths to point to your Jellyfin server installation -->
+    <!--
+    <Reference Include="MediaBrowser.Common">
+      <HintPath>C:\Program Files\Jellyfin\Server\MediaBrowser.Common.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MediaBrowser.Controller">
+      <HintPath>C:\Program Files\Jellyfin\Server\MediaBrowser.Controller.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MediaBrowser.Model">
+      <HintPath>C:\Program Files\Jellyfin\Server\MediaBrowser.Model.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Jellyfin.Controller">
+      <HintPath>C:\Program Files\Jellyfin\Server\Jellyfin.Controller.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions">
+      <HintPath>C:\Program Files\Jellyfin\Server\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    -->
+    
+    <!-- Option 2: If you have Jellyfin source code, use ProjectReference instead:
+    <ItemGroup>
+      <ProjectReference Include="..\..\jellyfin\MediaBrowser.Common\MediaBrowser.Common.csproj" />
+      <ProjectReference Include="..\..\jellyfin\MediaBrowser.Controller\MediaBrowser.Controller.csproj" />
+      <ProjectReference Include="..\..\jellyfin\MediaBrowser.Model\MediaBrowser.Model.csproj" />
+      <ProjectReference Include="..\..\jellyfin\Jellyfin.Controller\Jellyfin.Controller.csproj" />
+    </ItemGroup>
+    -->
+  </ItemGroup>
+  
+  <PropertyGroup>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Include manifest.json in the build output -->
+    <None Include="manifest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
