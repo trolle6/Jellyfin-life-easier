@@ -5,7 +5,7 @@
     "version": "1.0.0.0",
     "description": "Enhances library scanning to replace all metadata and provides universal settings like combining seasons.",
     "overview": "A Jellyfin plugin that converts 'soft' library scans into full metadata replacement operations and provides universal settings like combining all seasons into one.",
-    "owner": "Jellyfin-easier-life",
+    "owner": "trolle6",
     "category": "Library",
     "targetAbi": "10.9.0.0",
     "imageUrl": "",
