@@ -9,9 +9,9 @@
     "category": "Library",
     "targetAbi": "10.9.0.0",
     "imageUrl": "",
-    "changelog": "https://github.com/yourusername/Jellyfin-easier-life/releases",
+    "changelog": "https://github.com/trolle6/Jellyfin-life-easier/releases",
     "timestamp": "2024-01-01T00:00:00Z",
-    "sourceUrl": "https://github.com/yourusername/Jellyfin-easier-life",
+    "sourceUrl": "https://github.com/trolle6/Jellyfin-life-easier",
     "checksum": "",
     "artifacts": [
       {
@@ -25,4 +25,3 @@
     ]
   }
 ]
-
