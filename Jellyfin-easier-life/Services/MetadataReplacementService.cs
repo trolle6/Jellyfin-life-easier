@@ -51,12 +51,13 @@ public class MetadataReplacementService
         {
             _logger.LogInformation("Replacing metadata for item: {ItemName} ({ItemId})", item.Name, item.Id);
 
-            // Force metadata refresh by clearing existing metadata
+            // Force metadata refresh - ALWAYS replace all metadata and images when called
+            // This ensures "Refresh Library" becomes "Replace All Metadata" automatically
             var refreshOptions = new MetadataRefreshOptions(_directoryService)
             {
-                ReplaceAllMetadata = true,
-                ReplaceImages = replaceImages,
-                MetadataRefreshMode = MetadataRefreshMode.FullRefresh,
+                ReplaceAllMetadata = true,  // Always true - this is the whole point!
+                ReplaceImages = replaceImages,  // Controlled by plugin config
+                MetadataRefreshMode = MetadataRefreshMode.FullRefresh,  // Full refresh, not soft scan
                 ImageRefreshMode = replaceImages ? MetadataRefreshMode.FullRefresh : MetadataRefreshMode.ValidationOnly
             };
 
