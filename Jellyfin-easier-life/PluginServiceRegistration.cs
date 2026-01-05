@@ -15,6 +15,12 @@ public class PluginServiceRegistration : IPluginServiceRegistration
         // Register activity tracker as singleton to maintain statistics across requests
         serviceCollection.AddSingleton<PluginActivityTracker>();
         
+        // Register plugin instance if available
+        if (Plugin.Instance != null)
+        {
+            serviceCollection.AddSingleton(Plugin.Instance);
+        }
+        
         serviceCollection.AddScoped<MetadataReplacementService>();
         serviceCollection.AddScoped<SeasonCombinationService>();
         serviceCollection.AddSingleton<LibraryScanHook>();
