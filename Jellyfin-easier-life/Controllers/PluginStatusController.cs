@@ -10,7 +10,7 @@ namespace Jellyfin_easier_life.Controllers;
 /// Controller for plugin status and statistics.
 /// </summary>
 [ApiController]
-[Route("Plugins/JellyfinEasierLife")]
+[Route("EasierLife")]
 [Authorize(Policy = "DefaultAuthorization")]
 public class PluginStatusController : BaseJellyfinApiController
 {

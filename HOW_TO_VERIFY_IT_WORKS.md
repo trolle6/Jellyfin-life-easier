@@ -6,7 +6,7 @@ The easiest way to see if the plugin is working is to check the status endpoint:
 
 1. **Open your browser** and go to:
    ```
-   http://your-jellyfin-server:8096/Plugins/JellyfinEasierLife/Status
+   http://your-jellyfin-server:8096/EasierLife/Status
    ```
    
    You'll need to be logged in or use your API key.
@@ -40,7 +40,7 @@ The easiest way to see if the plugin is working is to check the status endpoint:
 See recent items that were processed:
 
 ```
-http://your-jellyfin-server:8096/Plugins/JellyfinEasierLife/Activity
+http://your-jellyfin-server:8096/EasierLife/Activity
 ```
 
 ## 📝 Check Jellyfin Logs
