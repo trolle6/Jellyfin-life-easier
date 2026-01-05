@@ -92,3 +92,5 @@ sha1sum Jellyfin-easier-life.zip
 
 Once the ZIP is uploaded to GitHub and repository.json is updated, the plugin will be installable via the repository URL in Jellyfin!
 
+
+

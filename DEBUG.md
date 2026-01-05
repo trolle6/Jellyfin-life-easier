@@ -56,3 +56,5 @@ The hook should definitely work when you add a NEW item to the library. Try:
 2. Watch the logs - you should see "Item added: {ItemName}, triggering metadata replacement"
 
 
+
+

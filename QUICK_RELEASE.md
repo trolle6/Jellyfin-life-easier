@@ -52,3 +52,5 @@ git push origin main
 
 Done! The plugin will now be installable via the repository URL in Jellyfin.
 
+
+

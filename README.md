@@ -86,6 +86,18 @@ After installation, configure the plugin through the Jellyfin web interface:
 
 The plugin provides the following API endpoints:
 
+### Plugin Status
+```
+GET /Plugins/JellyfinEasierLife/Status
+```
+Returns plugin status, configuration, and statistics (items processed, success/failure counts, last activity time).
+
+### Activity Log
+```
+GET /Plugins/JellyfinEasierLife/Activity
+```
+Returns recent activity log showing which items were processed.
+
 ### Replace Metadata for Library
 ```
 POST /Library/ReplaceMetadata?libraryId={guid}&replaceImages=true
@@ -100,6 +112,19 @@ POST /Library/CombineSeasons?seriesId={guid}
 ```
 POST /Library/CombineSeasonsForLibrary?libraryId={guid}
 ```
+
+## Verifying It Works
+
+**Quick Check:** Visit `http://your-jellyfin-server:8096/Plugins/JellyfinEasierLife/Status` to see:
+- Plugin status and configuration
+- Statistics (items processed, success/failure counts)
+- Last activity time
+
+**Check Logs:** The plugin logs with clear markers (🔄 ✅ ❌) so you can easily see it working:
+- Look for `[Jellyfin Easier Life]` messages in Dashboard → Logs
+- You'll see messages when items are processed during library refreshes
+
+See [HOW_TO_VERIFY_IT_WORKS.md](HOW_TO_VERIFY_IT_WORKS.md) for detailed verification steps.
 
 ## How It Works
 

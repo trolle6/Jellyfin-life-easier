@@ -72,3 +72,5 @@ If you prefer to install manually:
 - **Features not working**: Verify the plugin is enabled and configured in Dashboard → Plugins
 
 
+
+

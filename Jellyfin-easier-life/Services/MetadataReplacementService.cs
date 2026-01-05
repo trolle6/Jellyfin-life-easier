@@ -16,6 +16,7 @@ public class MetadataReplacementService
     private readonly ILibraryManager _libraryManager;
     private readonly IProviderManager _providerManager;
     private readonly IDirectoryService _directoryService;
+    private readonly PluginActivityTracker? _activityTracker;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MetadataReplacementService"/> class.
@@ -24,16 +25,19 @@ public class MetadataReplacementService
     /// <param name="libraryManager">The library manager.</param>
     /// <param name="providerManager">The provider manager.</param>
     /// <param name="directoryService">The directory service.</param>
+    /// <param name="activityTracker">The activity tracker (optional).</param>
     public MetadataReplacementService(
         ILogger<MetadataReplacementService> logger,
         ILibraryManager libraryManager,
         IProviderManager providerManager,
-        IDirectoryService directoryService)
+        IDirectoryService directoryService,
+        PluginActivityTracker? activityTracker = null)
     {
         _logger = logger;
         _libraryManager = libraryManager;
         _providerManager = providerManager;
         _directoryService = directoryService;
+        _activityTracker = activityTracker;
     }
 
     /// <summary>
@@ -47,9 +51,12 @@ public class MetadataReplacementService
         bool replaceImages = true,
         CancellationToken cancellationToken = default)
     {
+        bool success = false;
         try
         {
-            _logger.LogInformation("Replacing metadata for item: {ItemName} ({ItemId})", item.Name, item.Id);
+            // Log with clear prefix so it's easy to spot in logs
+            _logger.LogWarning("🔄 [Jellyfin Easier Life] REPLACING ALL METADATA for: {ItemName} ({ItemType}, ID: {ItemId})", 
+                item.Name, item.GetType().Name, item.Id);
 
             // Force metadata refresh - ALWAYS replace all metadata and images when called
             // This ensures "Refresh Library" becomes "Replace All Metadata" automatically
@@ -63,12 +70,17 @@ public class MetadataReplacementService
 
             await _providerManager.RefreshFullMetadata(item, refreshOptions, cancellationToken);
 
-            _logger.LogInformation("Successfully replaced metadata for item: {ItemName}", item.Name);
+            success = true;
+            _logger.LogWarning("✅ [Jellyfin Easier Life] SUCCESSFULLY REPLACED metadata for: {ItemName}", item.Name);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error replacing metadata for item: {ItemName} ({ItemId})", item.Name, item.Id);
+            _logger.LogError(ex, "❌ [Jellyfin Easier Life] ERROR replacing metadata for: {ItemName} ({ItemId})", item.Name, item.Id);
             throw;
+        }
+        finally
+        {
+            _activityTracker?.RecordItemProcessed(item, success);
         }
     }
 

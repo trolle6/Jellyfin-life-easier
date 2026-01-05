@@ -88,3 +88,5 @@ git push origin main
 4. Find "Jellyfin Easier Life" and click **Install**
 5. Restart Jellyfin
 
+
+

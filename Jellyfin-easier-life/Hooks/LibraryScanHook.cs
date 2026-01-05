@@ -14,6 +14,7 @@ public class LibraryScanHook : IServerEntryPoint
     private readonly ILibraryManager _libraryManager;
     private readonly MetadataReplacementService _metadataReplacementService;
     private readonly Plugin _plugin;
+    private readonly PluginActivityTracker? _activityTracker;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="LibraryScanHook"/> class.
@@ -22,16 +23,19 @@ public class LibraryScanHook : IServerEntryPoint
     /// <param name="libraryManager">The library manager.</param>
     /// <param name="metadataReplacementService">The metadata replacement service.</param>
     /// <param name="plugin">The plugin instance.</param>
+    /// <param name="activityTracker">The activity tracker (optional).</param>
     public LibraryScanHook(
         ILogger<LibraryScanHook> logger,
         ILibraryManager libraryManager,
         MetadataReplacementService metadataReplacementService,
-        Plugin plugin)
+        Plugin plugin,
+        PluginActivityTracker? activityTracker = null)
     {
         _logger = logger;
         _libraryManager = libraryManager;
         _metadataReplacementService = metadataReplacementService;
         _plugin = plugin;
+        _activityTracker = activityTracker;
     }
 
     /// <inheritdoc />
@@ -41,8 +45,17 @@ public class LibraryScanHook : IServerEntryPoint
         _libraryManager.ItemAdded += OnItemAdded;
         _libraryManager.ItemUpdated += OnItemUpdated;
         
-        _logger.LogInformation("Library scan hook initialized. Metadata replacement is {Status}.",
-            _plugin.Configuration.ReplaceAllMetadata ? "enabled" : "disabled");
+        // Log with clear, visible markers
+        if (_plugin.Configuration.ReplaceAllMetadata)
+        {
+            _logger.LogWarning("✅ [Jellyfin Easier Life] PLUGIN ACTIVE - Metadata replacement is ENABLED");
+            _logger.LogWarning("   → All library refreshes will automatically replace ALL metadata");
+            _logger.LogWarning("   → Replace Images: {ReplaceImages}", _plugin.Configuration.ReplaceImages);
+        }
+        else
+        {
+            _logger.LogInformation("[Jellyfin Easier Life] Plugin loaded but metadata replacement is DISABLED");
+        }
 
         return Task.CompletedTask;
     }
@@ -65,7 +78,7 @@ public class LibraryScanHook : IServerEntryPoint
         {
             if (e.Item != null)
             {
-                _logger.LogDebug("Item added: {ItemName}, triggering metadata replacement", e.Item.Name);
+                _logger.LogWarning("🆕 [Jellyfin Easier Life] NEW ITEM DETECTED: {ItemName} - Triggering full metadata replacement", e.Item.Name);
                 await _metadataReplacementService.ReplaceMetadataAsync(
                     e.Item,
                     _plugin.Configuration.ReplaceImages,
@@ -74,7 +87,7 @@ public class LibraryScanHook : IServerEntryPoint
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error in OnItemAdded hook for item: {ItemName}", e.Item?.Name);
+            _logger.LogError(ex, "❌ [Jellyfin Easier Life] Error in OnItemAdded hook for item: {ItemName}", e.Item?.Name);
         }
     }
 
@@ -89,18 +102,20 @@ public class LibraryScanHook : IServerEntryPoint
         {
             if (e.Item != null)
             {
-                // When ForceMetadataRefresh is enabled, intercept ALL updates during library refresh
+                // Be VERY aggressive - intercept ALL updates when ForceMetadataRefresh is enabled
                 // This ensures "Refresh Library" becomes "Replace All Metadata" automatically
                 bool shouldReplace = false;
 
                 if (_plugin.Configuration.ForceMetadataRefresh)
                 {
-                    // If ForceMetadataRefresh is enabled, catch ALL metadata-related updates
-                    // This includes library refresh operations
+                    // Catch ALL update types - library refresh can trigger any of these
+                    // This is the key to making "Refresh Library" work as "Replace All Metadata"
                     shouldReplace = e.UpdateReason == ItemUpdateType.MetadataDownload || 
                                    e.UpdateReason == ItemUpdateType.MetadataEdit ||
                                    e.UpdateReason == ItemUpdateType.ImageUpdate ||
-                                   e.UpdateReason == ItemUpdateType.None; // Sometimes library refresh uses None
+                                   e.UpdateReason == ItemUpdateType.None || // Library refresh often uses None
+                                   e.UpdateReason == ItemUpdateType.UserDataSaved ||
+                                   e.UpdateReason == ItemUpdateType.ChapterMetadataDownloaded;
                 }
                 else
                 {
@@ -110,8 +125,8 @@ public class LibraryScanHook : IServerEntryPoint
 
                 if (shouldReplace)
                 {
-                    _logger.LogInformation("Item metadata updated: {ItemName} (Reason: {Reason}), triggering FULL metadata replacement with ReplaceAllMetadata=true and ReplaceImages={ReplaceImages}", 
-                        e.Item.Name, e.UpdateReason, _plugin.Configuration.ReplaceImages);
+                    _logger.LogWarning("🔄 [Jellyfin Easier Life] ITEM UPDATED: {ItemName} (Reason: {Reason}) - Intercepting and replacing ALL metadata", 
+                        e.Item.Name, e.UpdateReason);
                     
                     // ALWAYS replace all metadata and images when plugin is enabled
                     // This is the core functionality - turning soft scan into full replacement
@@ -124,7 +139,7 @@ public class LibraryScanHook : IServerEntryPoint
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error in OnItemUpdated hook for item: {ItemName}", e.Item?.Name);
+            _logger.LogError(ex, "❌ [Jellyfin Easier Life] Error in OnItemUpdated hook for item: {ItemName}", e.Item?.Name);
         }
     }
 }
