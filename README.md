@@ -88,13 +88,13 @@ The plugin provides the following API endpoints:
 
 ### Plugin Status
 ```
-GET /Library/PluginStatus
+GET /Plugins/JellyfinEasierLife/Status
 ```
 Returns plugin status, configuration, and statistics (items processed, success/failure counts, last activity time).
 
 ### Activity Log
 ```
-GET /Library/PluginActivity
+GET /Plugins/JellyfinEasierLife/Activity
 ```
 Returns recent activity log showing which items were processed.
 
