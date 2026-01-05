@@ -88,13 +88,13 @@ The plugin provides the following API endpoints:
 
 ### Plugin Status
 ```
-GET /EasierLife/Status
+GET /Library/PluginStatus
 ```
 Returns plugin status, configuration, and statistics (items processed, success/failure counts, last activity time).
 
 ### Activity Log
 ```
-GET /EasierLife/Activity
+GET /Library/PluginActivity
 ```
 Returns recent activity log showing which items were processed.
 
